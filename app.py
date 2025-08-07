@@ -7,8 +7,8 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your_secret_key_here_change_in_production')
 
 # Hardcoded login credentials
-LOGIN_EMAIL = "sachitraders31@gmail.com"
-LOGIN_PASSWORD = "Imadethis@3101"
+LOGIN_EMAIL = "nakshinterior2020@gmail.com"
+LOGIN_PASSWORD = "ivgenerator@3101"
 
 # Company information
 COMPANY_INFO = {
