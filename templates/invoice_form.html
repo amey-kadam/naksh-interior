@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Naksh Interior - Invoice Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c5aa0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .form-section h2 {
+            color: #2c5aa0;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2c5aa0;
+        }
+        .item-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .item-group input, .item-group textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .item-group textarea {
+            min-height: 40px;
+            resize: vertical;
+        }
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .add-btn:hover {
+            background-color: #218838;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], input[type="date"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .submit-btn {
+            background-color: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background-color: #1e3d6f;
+        }
+        .spec-item-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        .spec-item-group input {
+            flex: 1;
+        }
+        .spec-item-group textarea {
+            flex: 2;
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Naksh Interior - Invoice Generator</h1>
+        <form method="POST">
+            <!-- Customer Information -->
+            <div class="form-section">
+                <h2>Customer Information</h2>
+                <label>Customer Name:</label>
+                <input type="text" name="customer_name" required>
+
+                <label>Customer Address:</label>
+                <textarea name="customer_address" rows="3" required></textarea>
+
+                <label>Invoice Number:</label>
+                <input type="text" name="invoice_number" required>
+
+                <label>Invoice Date:</label>
+                <input type="date" name="invoice_date" required>
+            </div>
+
+            <!-- Section A - Civil Work -->
+            <div class="form-section">
+                <h2>A - Civil Work</h2>
+                <div id="civil-items"></div>
+                <button type="button" class="add-btn" onclick="addItem('civil')">+ Add Civil Item</button>
+            </div>
+
+            <!-- Section B - Furniture Work -->
+            <div class="form-section">
+                <h2>B - Furniture Work</h2>
+                <div id="furniture-items"></div>
+                <button type="button" class="add-btn" onclick="addItem('furniture')">+ Add Furniture Item</button>
+            </div>
+
+            <!-- Section C - Specifications -->
+            <div class="form-section">
+                <h2>Specifications</h2>
+                <p style="color: #666; margin-bottom: 20px; font-style: italic;">
+                    Add the specifications that will appear on the second page of your invoice.
+                </p>
+                <div id="specification-items"></div>
+                <button type="button" class="add-btn" onclick="addSpecification()">+ Add Specification</button>
+            </div>
+
+
+            <button type="submit" class="submit-btn">Generate Invoice</button>
+        </form>
+    </div>
+
+    <script>
+        let civilCount = 0, furnitureCount = 0, specificationCount = 0;
+
+        function addItem(section) {
+            const container = document.getElementById(`${section}-items`);
+            const index = section === 'civil' ? ++civilCount : ++furnitureCount;
+
+            const html = `
+                <div class="item-group">
+                    <input type="text" name="${section}_description${index}" placeholder="Description" required>
+                    <input type="text" name="${section}_size${index}" placeholder="Size/Qty" required>
+                    <input type="number" name="${section}_amount${index}" placeholder="Amount" step="0.01" required>
+                    <button type="button" class="remove-btn" onclick="removeItem(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addSpecification() {
+            const container = document.getElementById('specification-items');
+            const index = ++specificationCount;
+
+            const html = `
+                <div class="spec-item-group">
+                    <input type="text" name="spec_description${index}" placeholder="Description (e.g., PLYWOOD / MDF)" required>
+                    <textarea name="spec_materials${index}" placeholder="Materials to be used (e.g., 6MM, 12MM, 18MM PLYWOOD TO BE USED...)" required></textarea>
+                    <button type="button" class="remove-btn" onclick="removeItem(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeItem(button) {
+            button.parentElement.remove();
+        }
+
+        // Add one row by default for each section
+        addItem('civil');
+        addItem('furniture');
+        addSpecification();
+        addSpecification();
+    </script>
+</body>
+</html>
