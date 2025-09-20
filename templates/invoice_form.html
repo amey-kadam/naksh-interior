@@ -43,11 +43,30 @@
             align-items: center;
         }
         .item-group input, .item-group textarea {
-            flex: 1;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 14px;
+        }
+        .item-group .serial-no {
+            width: 60px;
+            background-color: #f0f0f0;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+            border: 1px solid #ccc;
+        }
+        .item-group .description {
+            flex: 2;
+        }
+        .item-group .size {
+            flex: 1;
+        }
+        .item-group .quantity {
+            flex: 1;
+        }
+        .item-group .amount {
+            flex: 1;
         }
         .item-group textarea {
             min-height: 40px;
@@ -61,6 +80,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 12px;
+            min-width: 80px;
         }
         .remove-btn:hover {
             background-color: #c82333;
@@ -116,12 +136,72 @@
             margin-bottom: 15px;
             align-items: flex-start;
         }
+        .spec-item-group .serial-no {
+            width: 60px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
         .spec-item-group input {
             flex: 1;
         }
         .spec-item-group textarea {
             flex: 2;
             min-height: 60px;
+        }
+        .item-headers {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c5aa0;
+            font-size: 12px;
+        }
+        .item-headers .serial-header {
+            width: 60px;
+            text-align: center;
+        }
+        .item-headers .description-header {
+            flex: 2;
+        }
+        .item-headers .size-header {
+            flex: 1;
+        }
+        .item-headers .quantity-header {
+            flex: 1;
+        }
+        .item-headers .amount-header {
+            flex: 1;
+        }
+        .item-headers .action-header {
+            min-width: 80px;
+            text-align: center;
+        }
+        .spec-headers {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c5aa0;
+            font-size: 12px;
+        }
+        .spec-headers .serial-header {
+            width: 60px;
+            text-align: center;
+        }
+        .spec-headers .description-header {
+            flex: 1;
+        }
+        .spec-headers .materials-header {
+            flex: 2;
+        }
+        .spec-headers .action-header {
+            min-width: 80px;
+            text-align: center;
         }
     </style>
 </head>
@@ -145,76 +225,102 @@
                 <input type="date" name="invoice_date" required>
             </div>
 
-            <!-- Section A - Civil Work -->
+            <!-- Section A - Furniture Work -->
             <div class="form-section">
-                <h2>A - Civil Work</h2>
+                <h2>A - FURNITURE WORK</h2>
+                <div class="item-headers">
+                    <div class="serial-header">Sr. No.</div>
+                    <div class="description-header">Description</div>
+                    <div class="size-header">Size</div>
+                    <div class="quantity-header">Quantity</div>
+                    <div class="amount-header">Amount</div>
+                    <div class="action-header">Action</div>
+                </div>
                 <div id="civil-items"></div>
-                <button type="button" class="add-btn" onclick="addItem('civil')">+ Add Civil Item</button>
+                <button type="button" class="add-btn" onclick="addItem('civil')">+ Add Furniture Item</button>
             </div>
 
-            <!-- Section B - Furniture Work -->
+            <!-- Section B - Civil Work -->
             <div class="form-section">
-                <h2>B - Furniture Work</h2>
+                <h2>B - CIVIL WORK</h2>
+                <div class="item-headers">
+                    <div class="serial-header">Sr. No.</div>
+                    <div class="description-header">Description</div>
+                    <div class="size-header">Size</div>
+                    <div class="quantity-header">Quantity</div>
+                    <div class="amount-header">Amount</div>
+                    <div class="action-header">Action</div>
+                </div>
                 <div id="furniture-items"></div>
-                <button type="button" class="add-btn" onclick="addItem('furniture')">+ Add Furniture Item</button>
+                <button type="button" class="add-btn" onclick="addItem('furniture')">+ Add Civil Item</button>
             </div>
 
-            <!-- Section C - Specifications -->
+            <!-- Specifications Note -->
             <div class="form-section">
                 <h2>Specifications</h2>
-                <p style="color: #666; margin-bottom: 20px; font-style: italic;">
-                    Add the specifications that will appear on the second page of your invoice.
+                <p style="color: #666; margin-bottom: 10px; font-style: italic;">
+                    Standard specifications will be automatically included in your invoice on the second page.
                 </p>
-                <div id="specification-items"></div>
-                <button type="button" class="add-btn" onclick="addSpecification()">+ Add Specification</button>
+                <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; font-size: 12px; color: #555;">
+                    <strong>The following specifications will be included:</strong><br>
+                    • PLYWOOD / MDF<br>
+                    • HARDWARE<br>
+                    • LAMINATES / ACRYLIC<br>
+                    • MATERIAL NOT INCLUDED
+                </div>
             </div>
-
 
             <button type="submit" class="submit-btn">Generate Invoice</button>
         </form>
     </div>
 
     <script>
-        let civilCount = 0, furnitureCount = 0, specificationCount = 0;
+        let civilCount = 0, furnitureCount = 0;
 
         function addItem(section) {
             const container = document.getElementById(`${section}-items`);
             const index = section === 'civil' ? ++civilCount : ++furnitureCount;
+            const serialNo = section === 'civil' ? civilCount : furnitureCount;
 
             const html = `
                 <div class="item-group">
-                    <input type="text" name="${section}_description${index}" placeholder="Description" required>
-                    <input type="text" name="${section}_size${index}" placeholder="Size/Qty" required>
-                    <input type="number" name="${section}_amount${index}" placeholder="Amount" step="0.01" required>
-                    <button type="button" class="remove-btn" onclick="removeItem(this)">Remove</button>
+                    <input type="text" class="serial-no" value="${serialNo.toString().padStart(2, '0')}" readonly>
+                    <input type="text" name="${section}_description${index}" class="description" placeholder="Description" required>
+                    <input type="text" name="${section}_size${index}" class="size" placeholder="Size" required>
+                    <input type="number" name="${section}_quantity${index}" class="quantity" placeholder="Quantity" step="0.01" required>
+                    <input type="number" name="${section}_amount${index}" class="amount" placeholder="Amount" step="0.01" required>
+                    <button type="button" class="remove-btn" onclick="removeItem(this, '${section}')">Remove</button>
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', html);
         }
 
-        function addSpecification() {
-            const container = document.getElementById('specification-items');
-            const index = ++specificationCount;
-
-            const html = `
-                <div class="spec-item-group">
-                    <input type="text" name="spec_description${index}" placeholder="Description (e.g., PLYWOOD / MDF)" required>
-                    <textarea name="spec_materials${index}" placeholder="Materials to be used (e.g., 6MM, 12MM, 18MM PLYWOOD TO BE USED...)" required></textarea>
-                    <button type="button" class="remove-btn" onclick="removeItem(this)">Remove</button>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', html);
-        }
-
-        function removeItem(button) {
+        function removeItem(button, section) {
             button.parentElement.remove();
+            // Renumber the remaining items
+            renumberItems(section);
+        }
+
+        function renumberItems(section) {
+            const container = document.getElementById(`${section}-items`);
+            const items = container.querySelectorAll('.item-group');
+            
+            items.forEach((item, index) => {
+                const serialNoInput = item.querySelector('.serial-no');
+                serialNoInput.value = (index + 1).toString().padStart(2, '0');
+            });
+
+            // Update the counter
+            if (section === 'civil') {
+                civilCount = items.length;
+            } else {
+                furnitureCount = items.length;
+            }
         }
 
         // Add one row by default for each section
         addItem('civil');
         addItem('furniture');
-        addSpecification();
-        addSpecification();
     </script>
 </body>
 </html>

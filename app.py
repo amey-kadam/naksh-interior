@@ -76,49 +76,53 @@ def invoice_form():
         civil_items = []
         furniture_items = []
         
-        # Extract Civil Work Items
+        # Extract Civil Work Items (Furniture Work in the template)
         for key in request.form:
             if key.startswith('civil_description'):
                 index = key.replace('civil_description', '')
                 description = request.form.get(f'civil_description{index}')
                 size = request.form.get(f'civil_size{index}')
+                quantity = request.form.get(f'civil_quantity{index}')
                 amount = float(request.form.get(f'civil_amount{index}', 0))
                 
-                if description and size and amount > 0:
+                if description and size and quantity and amount > 0:
                     civil_items.append({
                         'description': description,
-                        'quantity_unit': size,
+                        'size': size,
+                        'quantity': quantity,
                         'total': amount
                     })
 
-        # Extract Furniture Work Items
+        # Extract Furniture Work Items (Civil Work in the template)
         for key in request.form:
             if key.startswith('furniture_description'):
                 index = key.replace('furniture_description', '')
                 description = request.form.get(f'furniture_description{index}')
                 size = request.form.get(f'furniture_size{index}')
+                quantity = request.form.get(f'furniture_quantity{index}')
                 amount = float(request.form.get(f'furniture_amount{index}', 0))
                 
-                if description and size and amount > 0:
+                if description and size and quantity and amount > 0:
                     furniture_items.append({
                         'description': description,
-                        'quantity_unit': size,
+                        'size': size,
+                        'quantity': quantity,
                         'total': amount
                     })
 
-        # Extract Specification Items
-        specification_items = []
-        for key in request.form:
-            if key.startswith('spec_description'):
-                index = key.replace('spec_description', '')
-                description = request.form.get(f'spec_description{index}')
-                materials = request.form.get(f'spec_materials{index}')
-                
-                if description and materials:
-                    specification_items.append({
-                        'description': description,
-                        'materials': materials
-                    })
+        # Extract Specification Items - No longer needed as specifications are hardcoded
+        # specification_items = []
+        # for key in request.form:
+        #     if key.startswith('spec_description'):
+        #         index = key.replace('spec_description', '')
+        #         description = request.form.get(f'spec_description{index}')
+        #         materials = request.form.get(f'spec_materials{index}')
+        #         
+        #         if description and materials:
+        #             specification_items.append({
+        #                 'description': description,
+        #                 'materials': materials
+        #             })
 
         # Calculate totals
         civil_total = sum(item['total'] for item in civil_items)
@@ -140,7 +144,6 @@ def invoice_form():
             invoice_date=invoice_date,
             civil_items=civil_items,
             furniture_items=furniture_items,
-            specification_items=specification_items,
             civil_total=civil_total,
             furniture_total=furniture_total,
             subtotal=subtotal,

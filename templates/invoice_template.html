@@ -50,6 +50,13 @@
     th { background-color: #f8f9fa; color: #2c5aa0; font-weight: bold; }
     tr:nth-child(even) { background-color: #f8f9fa; }
     .section-total { background-color: #e8f4f8 !important; font-weight: bold; border-top: 1px solid #2c5aa0; }
+    
+    /* Column widths for better layout */
+    .serial-col { width: 8%; text-align: center; }
+    .description-col { width: 40%; }
+    .size-col { width: 15%; text-align: center; }
+    .quantity-col { width: 12%; text-align: center; }
+    .amount-col { width: 15%; text-align: right; }
 
     .totals-section { display: flex; justify-content: flex-end; margin-top: 8px; font-size: 9px; }
     .totals-column { min-width: 200px; }
@@ -125,11 +132,11 @@
     <div class="invoice-box">
         <div class="header-top">
             <div class="logo">
-                <!-- <img src="{{ url_for('static', filename='image.png') }}" alt="Naksh Interior Logo" /> -->
+                <img src="{{ url_for('static', filename='final_logo.png') }}" alt="Naksh Interior Logo" />
             </div>
             <div class="company-header">
                 <h1>{{ company_name }}</h1>
-                <p>ARCHITECT | INTERIOR | REAL ESTATE</p>
+                <p>ARCHITECT | INTERIOR | CONSULTING | CONTRACTING</p>
             </div>
         </div>
         <hr class="header-separator" />
@@ -155,62 +162,70 @@
 
             <!-- Work Sections Container -->
             <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px; background-color: #fafafa;">
-                <!-- Section A - Civil Work Table -->
+                <!-- Section A - Furniture Work Table -->
                 {% if civil_items %}
                 <div class="section-header">
-                    <h3>A - CIVIL WORK</h3>
+                    <h3>A - FURNITURE WORK</h3>
                 </div>
                 <div class="items-table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Description</th>
-                                <th>Size/Qty</th>
-                                <th>Amount</th>
+                                <th class="serial-col">Sr. No.</th>
+                                <th class="description-col">Description</th>
+                                <th class="size-col">Size</th>
+                                <th class="quantity-col">Quantity</th>
+                                <th class="amount-col">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in civil_items %}
                             <tr>
-                                <td>{{ item.description }}</td>
-                                <td>{{ item.quantity_unit }}</td>
-                                <td>{{ currency_symbol }}{{ "{:.2f}".format(item.total) }}</td>
+                                <td class="serial-col">{{ "%02d"|format(loop.index) }}</td>
+                                <td class="description-col">{{ item.description }}</td>
+                                <td class="size-col">{{ item.size }}</td>
+                                <td class="quantity-col">{{ item.quantity }}</td>
+                                <td class="amount-col">{{ currency_symbol }}{{ "{:.2f}".format(item.total) }}</td>
                             </tr>
                             {% endfor %}
                             <tr class="section-total">
-                                <td colspan="2"><strong>Civil Work Total:</strong></td>
-                                <td><strong>{{ currency_symbol }}{{ "{:.2f}".format(civil_total) }}</strong></td>
+                                <td colspan="4"><strong>Furniture Work Total:</strong></td>
+                                <td class="amount-col"><strong>{{ currency_symbol }}{{ "{:.2f}".format(civil_total) }}</strong></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 {% endif %}
 
-                <!-- Section B - Furniture Work Table -->
+                <!-- Section B - Civil Work Table -->
                 {% if furniture_items %}
                 <div class="section-header">
-                    <h3>B - FURNITURE WORK</h3>
+                    <h3>B - CIVIL WORK</h3>
                 </div>
                 <div class="items-table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Description</th>
-                                <th>Size/Qty</th>
-                                <th>Amount</th>
+                                <th class="serial-col">Sr. No.</th>
+                                <th class="description-col">Description</th>
+                                <th class="size-col">Size</th>
+                                <th class="quantity-col">Quantity</th>
+                                <th class="amount-col">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in furniture_items %}
                             <tr>
-                                <td>{{ item.description }}</td>
-                                <td>{{ item.quantity_unit }}</td>
-                                <td>{{ currency_symbol }}{{ "{:.2f}".format(item.total) }}</td>
+                                <td class="serial-col">{{ "%02d"|format(loop.index) }}</td>
+                                <td class="description-col">{{ item.description }}</td>
+                                <td class="size-col">{{ item.size }}</td>
+                                <td class="quantity-col">{{ item.quantity }}</td>
+                                <td class="amount-col">{{ currency_symbol }}{{ "{:.2f}".format(item.total) }}</td>
                             </tr>
                             {% endfor %}
                             <tr class="section-total">
-                                <td colspan="2"><strong>Furniture Work Total:</strong></td>
-                                <td><strong>{{ currency_symbol }}{{ "{:.2f}".format(furniture_total) }}</strong></td>
+                                <td colspan="4"><strong>Civil Work Total:</strong></td>
+                                <td class="amount-col"><strong>{{ currency_symbol }}{{ "{:.2f}".format(furniture_total) }}</strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -274,55 +289,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if specification_items %}
-                            {% for spec in specification_items %}
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">{{ "%02d"|format(loop.index) }}</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">{{ spec.description }}</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">{{ spec.materials | nl2br }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <!-- Default specifications if none provided -->
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">01</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">PLYWOOD / MDF</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">
-                                    <ul style="margin: 0; padding-left: 15px;">
-                                        <li>6MM, 12MM, 18MM, 25MM, 30MM, ETC PLYWOOD TO BE USED</li>
-                                        <li>BOILING WATER RESISTANT (BWR) 303 PLY TO BE USED.</li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">02</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">HARDWARE</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">
-                                    <ul style="margin: 0; padding-left: 15px;">
-                                        <li>EBCO, SOLO, GODREJ, HETICH, BOSH, EUROPA, ROMA, ONYX, ETC TO BE USED.</li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">03</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">LAMINATES</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">
-                                    <ul style="margin: 0; padding-left: 15px;">
-                                        <li>INTERNAL LAMINATE : <strong>FABRIC FINISH ( SIESTA )</strong></li>
-                                        <li>EXTERNAL LAMINATE : <strong>MERINO, CENTURY, ACRYLIC FINISHES AS PER REQUIREMENTS</strong></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">04</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">LIGHTS</td>
-                                <td style="border: 1px solid #ddd; padding: 6px;">
-                                    <ul style="margin: 0; padding-left: 15px;">
-                                        <li>PANNEL/SURFACE/LED/PROFILE/TRACK/SPOT/CHANDLIER AS PER REQUIREMENTS</li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        {% endif %}
+                        <!-- Hardcoded specifications -->
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">01</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">PLYWOOD / MDF</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">
+                                6MM, 12MM, 18MM, 25MM, 30MM, ETC Alternate GURJAN PLYWOOD TO BE USED BOILING WATER RESISTANT (BWR) 303 & 710 GRADE PLY TO BE USED
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">02</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">HARDWARE</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">
+                                EBCO, SOLO, GODREJ, HETTICH, BOSH, EUROPA, ROMA, ONYX, ETC TO BE USED.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">03</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">LAMINATES / ACRYLIC</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">
+                                INTERNAL LAMINATE : FABRIC FINISH ( SIESTA ) EXTERNAL LAMINATE : ADVANCE,CROMA ROYAL TOUCH,MERINO, CENTURY, ACRYLIC ETC FINISHES AS PER REQUIREMENTS & INTERNAL SIDE WILL IN WHITE 0.8MM LAMINATE FINISH, EXTERNAL SIDE WILL BE IN 1MM/ PLY FOR BOX STRUCTURE & KITCHEN ACRYLIC CHOICE UPTO 3200/PER SHEET NO WARRANTY
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">04</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">MATERIAL NOT INCLUDED</td>
+                            <td style="border: 1px solid #ddd; padding: 6px;">
+                                MATERIAL UNDER CLIENT SCOPE MATTRESS / CURTAINS / HEADBOARD ETC.
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -420,8 +415,6 @@
                     <li>EXTRA SHELVES, EXTRA STORAGE AND ALL OTHER EXTRA ITEMS WHICH ARE NOT MENTIONED IN THE QUOTATION WILL BE CHARGED AND CONSIDERED IN EXTRA WORK.</li>
                 </ol>
 
-               
-                
                 <div style="margin-top: 30px; text-align: center; font-size: 14px;">
                     <p><strong>Thank you for choosing Naksh Interior!</strong></p>
                     <p>For any queries, please contact us at +91 9762764662 or nakshinterior2020@gmail.com</p>
