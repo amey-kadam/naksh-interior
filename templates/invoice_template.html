@@ -5,7 +5,7 @@
     <title>Invoice - {{ invoice_number }}</title>
     <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.2; background-color: #f9f9f9; color: #333; }
+    body { font-family: Arial, sans-serif; font-size: 12px; line-height: 1.3; background-color: #f9f9f9; color: #333; }
     .invoice-box { max-width: 800px; margin: 8px auto; background: white; padding: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
 
     .header-top { 
@@ -23,13 +23,14 @@
         white-space: nowrap;
     }
     .company-header h1 { 
-        font-size: 16px; 
+        font-size: 12px; 
         color: #2c5aa0; 
         margin-bottom: 2px; 
         white-space: nowrap;
+        font-weight: bold;
     }
     .company-header p { 
-        font-size: 9px; 
+        font-size: 12px; 
         color: #666; 
         white-space: nowrap;
     }
@@ -38,14 +39,14 @@
     .invoice-main-container { border: 1px solid #ddd; padding: 8px; margin: 8px 0; }
 
     .invoice-details { display: flex; justify-content: space-between; margin-bottom: 12px; }
-    .invoice-info, .customer-info { flex: 1; font-size: 9px; }
+    .invoice-info, .customer-info { flex: 1; font-size: 12px; }
     .customer-info { margin-left: 8px; }
     .invoice-info p, .customer-info p { margin-bottom: 4px; }
 
     .section-header { margin: 12px 0 8px; }
-    .section-header h3 { font-size: 11px; padding: 4px; background-color: #f0f4f8; border-left: 3px solid #2c5aa0; }
+    .section-header h3 { font-size: 12px; padding: 4px; background-color: #f0f4f8; border-left: 3px solid #2c5aa0; font-weight: bold; }
 
-    table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 9px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 12px; }
     th, td { padding: 4px; text-align: left; border-bottom: 1px solid #ddd; }
     th { background-color: #f8f9fa; color: #2c5aa0; font-weight: bold; }
     tr:nth-child(even) { background-color: #f8f9fa; }
@@ -58,40 +59,40 @@
     .quantity-col { width: 12%; text-align: center; }
     .amount-col { width: 15%; text-align: right; }
 
-    .totals-section { display: flex; justify-content: flex-end; margin-top: 8px; font-size: 9px; }
+    .totals-section { display: flex; justify-content: flex-end; margin-top: 8px; font-size: 12px; }
     .totals-column { min-width: 200px; }
     .total-row { display: flex; justify-content: space-between; padding: 3px 0; }
     .total-label { font-weight: bold; }
-    .final-total { border-top: 1px solid #2c5aa0; font-size: 10px; font-weight: bold; color: #2c5aa0; }
+    .final-total { border-top: 1px solid #2c5aa0; font-size: 12px; font-weight: bold; color: #2c5aa0; }
 
-    .terms-section { margin-top: 15px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #2c5aa0; font-size: 9px; }
+    .terms-section { margin-top: 15px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #2c5aa0; font-size: 12px; }
 
-    .footer-details { margin-top: 12px; display: flex; justify-content: space-between; font-size: 8px; color: #666; }
+    .footer-details { margin-top: 12px; display: flex; justify-content: space-between; font-size: 12px; color: #666; }
 
-    button { background-color: #2c5aa0; color: white; padding: 5px 12px; font-size: 10px; border: none; border-radius: 4px; cursor: pointer; margin: 12px 0; }
+    button { background-color: #2c5aa0; color: white; padding: 5px 12px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; margin: 12px 0; }
     button:hover { background-color: #1e3d6f; }
 
-    /* Specifications page - keep compact and properly positioned */
+    /* Specifications page */
     .page-break { page-break-before: always; }
     .specifications-page { 
-        font-size: 9px; 
+        font-size: 12px; 
         padding-top: 50px;
     }
-    .specifications-page h2 { font-size: 16px; text-align: center; color: #2c5aa0; margin-bottom: 15px; }
-    .specifications-page table { font-size: 9px; }
+    .specifications-page h2 { font-size: 12px; text-align: center; color: #2c5aa0; margin-bottom: 15px; font-weight: bold; }
+    .specifications-page table { font-size: 12px; }
     .specifications-page th, .specifications-page td { padding: 6px; border: 1px solid #ddd; }
-    .specifications-page ul { margin: 0; padding-left: 15px; font-size: 9px; }
+    .specifications-page ul { margin: 0; padding-left: 15px; font-size: 12px; }
     .specifications-page li { margin-bottom: 2px; }
 
     .payment-gateway-section { margin-top: 15px; text-align: center; }
-    .payment-gateway-title { color: #28a745; margin-bottom: 8px; font-size: 9px; font-weight: bold; }
-    .payment-gateway-list { text-align: left; display: inline-block; font-size: 8px; }
+    .payment-gateway-title { color: #28a745; margin-bottom: 8px; font-size: 12px; font-weight: bold; }
+    .payment-gateway-list { text-align: left; display: inline-block; font-size: 12px; }
     .payment-gateway-list li { margin-bottom: 3px; }
 
-    /* Terms and conditions page - KEEP ORIGINAL SIZE */
-    .terms-page { font-size: 12px; line-height: 1.4; }
-    .terms-page h2 { font-size: 20px; }
-    .terms-list { line-height: 1.4; font-size: 13px; padding-left: 20px; }
+    /* Terms and conditions page */
+    .terms-page { font-size: 12px; line-height: 1.3; }
+    .terms-page h2 { font-size: 12px; font-weight: bold; }
+    .terms-list { line-height: 1.3; font-size: 12px; padding-left: 20px; }
     .terms-list li { margin-bottom: 8px; text-align: justify; padding-left: 10px; }
     .terms-page .invoice-main-container { padding: 15px; }
 
@@ -114,11 +115,11 @@
         }
         .company-header h1 { 
             white-space: nowrap !important;
-            font-size: 14px !important;
+            font-size: 12px !important;
         }
         .company-header p { 
             white-space: nowrap !important;
-            font-size: 8px !important;
+            font-size: 12px !important;
         }
         .logo { 
             flex-shrink: 0 !important; 
@@ -322,11 +323,11 @@
                 </table>
 
                 <div style="margin-top: 15px;">
-                    <h3 style="text-align: center; color: blue; margin-bottom: 10px; font-size: 12px;">OWNER'S MATERIAL AND WORK</h3>
+                    <h3 style="text-align: center; color: blue; margin-bottom: 10px; font-size: 12px; font-weight: bold;">OWNER'S MATERIAL AND WORK</h3>
                     <table style="width: 100%; border-collapse: collapse;">
                         <tr>
                             <td style="border: 1px solid #ddd; padding: 10px; vertical-align: top; width: 50%;">
-                                <ul style="margin: 0; padding-left: 15px; font-size: 9px;">
+                                <ul style="margin: 0; padding-left: 15px; font-size: 12px;">
                                     <li>REFRIGERATOR</li>
                                     <li>A/C</li>
                                     <li>MICROWAVE</li>
@@ -343,7 +344,7 @@
                                 </ul>
                             </td>
                             <td style="border: 1px solid #ddd; padding: 10px; vertical-align: top; width: 50%;">
-                                <ul style="margin: 0; padding-left: 15px; font-size: 9px;">
+                                <ul style="margin: 0; padding-left: 15px; font-size: 12px;">
                                     <li>INVERTER</li>
                                     <li>EXTRA CHANDLIER</li>
                                     <li>CLOTHES HANGER</li>
@@ -352,7 +353,7 @@
                             </td>
                         </tr>
                     </table>
-                    <p style="text-align: center; font-weight: bold; margin-top: 10px; font-size: 9px; font-style: italic;">
+                    <p style="text-align: center; font-weight: bold; margin-top: 10px; font-size: 12px; font-style: italic;">
                         NOTE : THE INSTALLATION OF ABOVE LIST OF ITEMS WILL BE CONSIDERED IN EXTRA WORKS AND WILL BE CHARGED EXTRA.
                     </p>
                 </div>
@@ -415,7 +416,7 @@
                     <li>EXTRA SHELVES, EXTRA STORAGE AND ALL OTHER EXTRA ITEMS WHICH ARE NOT MENTIONED IN THE QUOTATION WILL BE CHARGED AND CONSIDERED IN EXTRA WORK.</li>
                 </ol>
 
-                <div style="margin-top: 30px; text-align: center; font-size: 14px;">
+                <div style="margin-top: 30px; text-align: center; font-size: 12px;">
                     <p><strong>Thank you for choosing Naksh Interior!</strong></p>
                     <p>For any queries, please contact us at +91 9762764662 or nakshinterior2020@gmail.com</p>
                 </div>
